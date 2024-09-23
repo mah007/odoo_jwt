@@ -1,32 +1,53 @@
 # -*- coding: utf-8 -*-
 {
-    'name': "jwt auth api",
+    'name': "JWT Authentication API for Odoo",
 
-    'summary': "for mobile and other system that use jwt as an authentication method ",
+    'summary': """
+        A module for implementing JWT-based authentication for mobile apps and external systems in Odoo.
+        This module provides secure authentication using JSON Web Tokens (JWT) and supports token refresh.""",
 
-    'description': "for mobile and other system that use jwt as an authentication method ",
+    'description': """
+        JWT Authentication API for Odoo provides a mechanism for secure login and API access using JSON Web Tokens (JWT). 
+        This module allows mobile applications, third-party systems, or any external clients to authenticate users through 
+        a token-based system. It provides endpoints for logging in, refreshing tokens, and securing API resources with JWT 
+        authentication. 
 
-    'author': "Mahmoud",
+        Key Features:
+        - User login with JWT token issuance.
+        - Token refresh endpoint to extend the session.
+        - Decorators for protecting API routes, ensuring only authenticated users can access.
+        - Integration with Odoo's internal authentication system.
+        - Easy to extend and integrate with existing Odoo modules.
+
+        This is ideal for mobile applications and other systems that require secure, stateless communication with Odoo.
+    """,
+
+    'author': "Mahmoud Abdel Latif",
     'website': "https://www.mah007.net",
 
-    'category': 'tools',
-    'version': '0.1',
+    'category': 'Authentication/Tools',
+    'version': '1.0',
 
-    # any module necessary for this one to work correctly
+    # Dependencies for this module to work correctly
     'depends': ['base', 'web'],
 
-    # always loaded
+    # Always loaded
     'data': [
-        # 'security/ir.model.access.csv',
+        # XML, CSV, or any other configuration files for the module can be loaded here.
+        # Example: 'security/ir.model.access.csv',
+    ],
 
-    ],
-    # only loaded in demonstration mode
+    # Demo data (only loaded in demonstration mode)
     'demo': [
-        # 'demo/demo.xml',
+        # Example: 'demo/demo.xml',
     ],
+
     'license': 'LGPL-3',
+
+    # Specify whether this module is installable and categorized as an application
     'installable': True,
     'application': True,
-    'sequence': 10,
 
+    # Define module loading sequence priority
+    'sequence': 10,
 }
