@@ -107,3 +107,7 @@ protected_resource Function: A protected endpoint that can only be accessed by a
 utils/jwt_auth.py
 generate_token Function: Generates a new JWT token given a user ID and email, with an expiration time of 1 hour.
 jwt_required Decorator: Verifies the JWT token in the request's Authorization header and ensures the user is authenticated.
+
+- **PostMan**
+
+file postman.json ready to use 
