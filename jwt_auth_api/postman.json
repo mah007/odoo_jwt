@@ -1,19 +1,25 @@
 {
 	"info": {
 		"_postman_id": "8f208256-b72d-4c09-a8de-be984a74a7d3",
-		"name": "Odoo_JWT_Auth",
+		"name": "Odoo JWT Authentication API Tests",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "9876522"
 	},
 	"item": [
 		{
-			"name": "login",
+			"name": "User Login",
 			"protocolProfileBehavior": {
 				"disableBodyPruning": true
 			},
 			"request": {
-				"method": "GET",
-				"header": [],
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
 				"body": {
 					"mode": "raw",
 					"raw": "{\n    \"email\":\"admin\",\n    \"password\":\"admin\"\n}",
@@ -35,19 +41,42 @@
 					]
 				}
 			},
-			"response": []
+			"response": [],
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"pm.test(\"JWT Token is returned\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData).to.have.property('token');",
+							"    pm.collectionVariables.set(\"jwt_token\", jsonData.token);",
+							"});"
+						]
+					}
+				}
+			]
 		},
 		{
-			"name": "refresh",
+			"name": "Token Refresh",
 			"protocolProfileBehavior": {
 				"disableBodyPruning": true
 			},
 			"request": {
-				"method": "GET",
-				"header": [],
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"token\": \"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjIsImVtYWlsIjoiYWRtaW4iLCJleHAiOjE3MjcwODE5NDZ9.jOe0VFDfuzKXPlcc8W9sUQ-nBDpHqNX_1hTttUIG6j8\"\n}",
+					"raw": "{\n    \"token\": \"{{jwt_token}}\"\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -66,10 +95,27 @@
 					]
 				}
 			},
-			"response": []
+			"response": [],
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"pm.test(\"Refreshed JWT Token is returned\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData).to.have.property('token');",
+							"    pm.collectionVariables.set(\"jwt_token\", jsonData.token);",
+							"});"
+						]
+					}
+				}
+			]
 		},
 		{
-			"name": "protected",
+			"name": "Protected Route",
 			"protocolProfileBehavior": {
 				"disableBodyPruning": true
 			},
@@ -78,19 +124,10 @@
 				"header": [
 					{
 						"key": "Authorization",
-						"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjIsImVtYWlsIjoiYWRtaW4iLCJleHAiOjE3MjcwODI0NTl9.oUU_ln2fFecJU__QDCEknIAStwBTQHwzTaaewuReySk",
+						"value": "Bearer {{jwt_token}}",
 						"type": "text"
 					}
 				],
-				"body": {
-					"mode": "raw",
-					"raw": "",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
 				"url": {
 					"raw": "{{url}}/api/protected",
 					"host": [
@@ -102,29 +139,24 @@
 					]
 				}
 			},
-			"response": []
-		}
-	],
-	"event": [
-		{
-			"listen": "prerequest",
-			"script": {
-				"type": "text/javascript",
-				"packages": {},
-				"exec": [
-					""
-				]
-			}
-		},
-		{
-			"listen": "test",
-			"script": {
-				"type": "text/javascript",
-				"packages": {},
-				"exec": [
-					""
-				]
-			}
+			"response": [],
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"pm.test(\"Protected route is accessed\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData).to.have.property('message');",
+							"    pm.expect(jsonData.message).to.eql('Access granted');",
+							"});"
+						]
+					}
+				}
+			]
 		}
 	],
 	"variable": [
